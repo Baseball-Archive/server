@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES6", // 컴파일된 JS의 ECMAScript 버전
+    "module": "commonjs", // 모듈 시스템 (Node.js 사용)
+    "strict": true, // 엄격한 타입 검사
+    "esModuleInterop": true, // ES 모듈과 CommonJS 모듈 간의 상호 운용성
+    "forceConsistentCasingInFileNames": true, // 파일 이름 대소문자 일관성 강제
+    "skipLibCheck": true, // 라이브러리 타입 검사 건너뜀
+    "outDir": "./dist", // 컴파일된 파일들이 저장될 디렉터리
+    "strictNullChecks": true, // null 및 undefined 값에 대한 엄격한 검사
+    "noImplicitAny": true // any 타입 암시적 사용 금지
+  },
+  "include": ["./**/*.ts"], // 포함할 파일 경로 (루트 디렉터리에서 모든 TypeScript 파일)
+  "exclude": ["node_modules", "dist"] // 제외할 파일 경로
+}

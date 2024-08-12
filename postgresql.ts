@@ -10,3 +10,5 @@ const pool = new Pool({
   password: process.env.POSTGRESQL_PASSWORD,
   port: parseInt(process.env.POSTGRESQL_PORT || "5432", 10),
 });
+
+export default pool;

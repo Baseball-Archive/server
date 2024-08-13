@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import pool from "../postgresql";
 import crypto from "crypto";
+import pool from "../postgresql";
 import { joinModel } from "../model/usersModel";
 
 const hashPassword = (password: string, salt: string) => {

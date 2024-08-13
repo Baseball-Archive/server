@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import usersRouter from "./routes/users";
 
 dotenv.config();
 const app: Application = express();
@@ -12,8 +13,5 @@ app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);
 });
 
-// @TODO 라우터 임포트
-import usersRouter from "./routes/users";
-
-// @TODO 라우터 설정
+//라우터 설정
 app.use("/users", usersRouter);

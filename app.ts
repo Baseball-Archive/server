@@ -13,5 +13,7 @@ app.listen(process.env.PORT, () => {
 });
 
 // @TODO 라우터 임포트
+import usersRouter from "./routes/users";
 
 // @TODO 라우터 설정
+app.use("/users", usersRouter);

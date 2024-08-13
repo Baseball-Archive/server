@@ -20,7 +20,7 @@ function createUserWithTeam({ email, hashedPassword, salt, nickname, myTeam }: J
   return [sql, values];
 }
 
-function joinModel(params: JoinModelParams): [string, any[]] {
+function joinQuery(params: JoinModelParams): [string, any[]] {
   if (params.myTeam) {
     return createUserWithTeam(params);
   } else {
@@ -28,4 +28,4 @@ function joinModel(params: JoinModelParams): [string, any[]] {
   }
 }
 
-export { joinModel };
+export { joinQuery };

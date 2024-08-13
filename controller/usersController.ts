@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import crypto from "crypto";
 import pool from "../postgresql";
-import { joinModel } from "../model/usersModel";
+import { joinQuery } from "../model/usersModel";
 
 const hashPassword = (password: string, salt: string) => {
   return crypto.pbkdf2Sync(password, salt, 10000, 10, "sha512").toString("base64");
@@ -13,7 +13,7 @@ const join = async (req: Request, res: Response): Promise<void> => {
   try {
     const salt = crypto.randomBytes(16).toString("base64");
     const hashedPassword = hashPassword(password, salt);
-    const [sql, values] = joinModel({ email, hashedPassword, salt, nickname, myTeam });
+    const [sql, values] = joinQuery({ email, hashedPassword, salt, nickname, myTeam });
 
     const result = await pool.query(sql, values);
 

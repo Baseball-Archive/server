@@ -1,16 +1,26 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import { joinQuery, getUserQuery, editQuery } from "../model/usersModel";
 import pool from "../postgresql";
-import { joinQuery, getQuery, editQuery } from "../model/usersModel";
 import admin from "../firebaseAdmin";
 
 const getUser = async (req: Request, res: Response) => {
-  const { idToken } = req.body;
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    res.status(StatusCodes.UNAUTHORIZED).json({
+      message: "Authorization 헤더가 누락되었거나 잘못된 형식입니다.",
+    });
+    return;
+  }
+
+  const idToken = authHeader.split("Bearer ")[1];
+
   try {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
-    const [sql, values] = getQuery({ uid });
+    const [sql, values] = getUserQuery({ uid });
 
     const { rows } = await pool.query(sql, values);
 
@@ -40,7 +50,18 @@ const getUser = async (req: Request, res: Response) => {
 };
 
 const join = async (req: Request, res: Response): Promise<void> => {
-  const { idToken, nickname, myTeam } = req.body;
+  const { nickname, myTeam } = req.body;
+
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    res.status(StatusCodes.UNAUTHORIZED).json({
+      message: "Authorization 헤더가 누락되었거나 잘못된 형식입니다.",
+    });
+    return;
+  }
+
+  const idToken = authHeader.split("Bearer ")[1];
 
   try {
     // Firebase ID 토큰 검증
@@ -63,7 +84,18 @@ const join = async (req: Request, res: Response): Promise<void> => {
 };
 
 const editUser = async (req: Request, res: Response): Promise<void> => {
-  const { idToken, nickname, picURL, myTeam } = req.body;
+  const { nickname, picURL, myTeam } = req.body;
+
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    res.status(StatusCodes.UNAUTHORIZED).json({
+      message: "Authorization 헤더가 누락되었거나 잘못된 형식입니다.",
+    });
+    return;
+  }
+
+  const idToken = authHeader.split("Bearer ")[1];
 
   try {
     const decodedToken = await admin.auth().verifyIdToken(idToken);

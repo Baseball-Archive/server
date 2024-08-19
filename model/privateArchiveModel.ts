@@ -53,3 +53,13 @@ export const updatePrivateArchive = async (archiveId: number, archiveData: Archi
   const result = await pool.query(query, values);
   return result.rows[0].id;
 };
+
+export const deletePrivateArchive = async (archiveId: number) => {
+  const query = `
+    DELETE FROM archive WHERE id = $1 RETURNING id
+  `;
+  const values = [archiveId];
+
+  const result = await pool.query(query, values);
+  return result.rows[0].id;
+};

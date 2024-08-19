@@ -43,3 +43,14 @@ export const updatePrivateArchive = async (req: Request, res: Response) => {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
   }
 };
+
+export const deletePrivateArchive = async (req: Request, res: Response) => {
+  try {
+    const { archiveId } = req.params;
+    const deletedArchiveId = await archiveModel.deletePrivateArchive(parseInt(archiveId));
+    res.status(StatusCodes.OK).json({ message: "deleted successfully", archive_id: deletedArchiveId });
+  } catch (error) {
+    console.error(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
+  }
+};

@@ -7,4 +7,6 @@ const router = Router();
 router.post("/", authenticateFirebaseToken, privateArchiveController.createPrivateArchive);
 router.get("/", privateArchiveController.getPrivateArchives);
 router.put("/:archiveId", privateArchiveController.updatePrivateArchive);
+router.delete("/:archiveId", privateArchiveController.deletePrivateArchive);
+
 export default router;

@@ -38,3 +38,18 @@ export const getPrivateArchives = async (user_uid: string) => {
   const result = await pool.query(query, values);
   return result.rows;
 };
+
+export const updatePrivateArchive = async (archiveId: number, archiveData: ArchiveData) => {
+  const { weather, home_team_score, away_team_score, title, content, pic_url, is_public } = archiveData;
+  const updated_at = new Date();
+
+  const query = `
+    UPDATE archive
+    SET weather = $1, home_team_score = $2, away_team_score = $3, title = $4, content = $5, pic_url = $6, is_public = $7, updated_at = $8
+    WHERE id = $9 RETURNING id
+  `;
+  const values = [weather, home_team_score, away_team_score, title, content, pic_url, is_public, updated_at, archiveId];
+
+  const result = await pool.query(query, values);
+  return result.rows[0].id;
+};

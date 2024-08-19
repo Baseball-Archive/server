@@ -32,3 +32,14 @@ export const getPrivateArchives = async (req: Request, res: Response) => {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
   }
 };
+
+export const updatePrivateArchive = async (req: Request, res: Response) => {
+  try {
+    const { archiveId } = req.params;
+    const updatedArchiveId = await archiveModel.updatePrivateArchive(parseInt(archiveId), req.body);
+    res.status(StatusCodes.OK).json({ message: "updated successfully", archive_id: updatedArchiveId });
+  } catch (error) {
+    console.error(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
+  }
+};

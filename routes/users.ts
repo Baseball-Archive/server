@@ -6,7 +6,8 @@ const router = express.Router();
 router.use(express.json());
 
 router.get("/", getUser);
-router.post("/join", join);
 router.put("/", editUser);
+
+router.post("/join", join);
 
 export default router;

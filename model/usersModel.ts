@@ -14,3 +14,9 @@ export const joinQuery = ({
   const values = [uid, nickname, myTeam];
   return [sql, values];
 };
+
+export const getQuery = ({ uid }: { uid: string }): [string, any[]] => {
+  const sql = `SELECT * FROM "BaseballArchive".users WHERE uid = $1`;
+  const values = [uid];
+  return [sql, values];
+};

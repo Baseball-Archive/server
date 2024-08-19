@@ -17,3 +17,18 @@ export const createPrivateArchive = async (req: Request, res: Response) => {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
   }
 };
+
+export const getPrivateArchives = async (req: Request, res: Response) => {
+  try {
+    const user_uid = req.user?.uid;
+    if (!user_uid) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: "User not authenticated" });
+    }
+
+    const archives = await archiveModel.getPrivateArchives(user_uid);
+    res.status(StatusCodes.OK).json(archives);
+  } catch (error) {
+    console.error(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
+  }
+};

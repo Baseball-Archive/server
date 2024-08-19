@@ -28,3 +28,13 @@ export const createPrivateArchive = async (archiveData: ArchiveData) => {
   const result = await pool.query(query, values);
   return result.rows[0].id;
 };
+
+export const getPrivateArchives = async (user_uid: string) => {
+  const query = `
+    SELECT * FROM archive WHERE user_uid = $1
+  `;
+  const values = [user_uid];
+
+  const result = await pool.query(query, values);
+  return result.rows;
+};

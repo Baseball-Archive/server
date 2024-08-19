@@ -5,4 +5,5 @@ import * as privateArchiveController from "../controller/privateArchiveControlle
 const router = Router();
 
 router.post("/", authenticateFirebaseToken, privateArchiveController.createPrivateArchive);
+router.get("/", privateArchiveController.getPrivateArchives);
 export default router;

@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "ts-node app.ts"
+    "start": "ts-node --files app.ts"
   },
   "dependencies": {
     "aws-sdk": "^2.1674.0",

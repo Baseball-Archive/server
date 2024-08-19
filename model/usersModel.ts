@@ -30,7 +30,7 @@ type EditUserParams = {
   myTeam: string;
 };
 
-const editUserWithoutPicURL = ({
+const updateUserWithoutPicURL = ({
   uid,
   nickname,
   myTeam,
@@ -45,7 +45,7 @@ const editUserWithoutPicURL = ({
   return [sql, values];
 };
 
-const editQueryWithPicURL = ({
+const updateQueryWithPicURL = ({
   uid,
   nickname,
   picURL,
@@ -62,10 +62,10 @@ const editQueryWithPicURL = ({
   return [sql, values];
 };
 
-export const editQuery = ({ uid, nickname, picURL, myTeam }: EditUserParams): [string, (string | null)[]] => {
+export const updateQuery = ({ uid, nickname, picURL, myTeam }: EditUserParams): [string, (string | null)[]] => {
   if (picURL) {
-    return editQueryWithPicURL({ uid, nickname, picURL, myTeam });
+    return updateQueryWithPicURL({ uid, nickname, picURL, myTeam });
   } else {
-    return editUserWithoutPicURL({ uid, nickname, myTeam });
+    return updateUserWithoutPicURL({ uid, nickname, myTeam });
   }
 };

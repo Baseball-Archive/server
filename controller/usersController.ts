@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { joinQuery, getUserQuery, editQuery } from "../model/usersModel";
+import { joinQuery, getUserQuery, updateQuery } from "../model/usersModel";
 import pool from "../postgresql";
 import admin from "../firebaseAdmin";
 
@@ -83,7 +83,7 @@ const join = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-const editUser = async (req: Request, res: Response): Promise<void> => {
+const updateUser = async (req: Request, res: Response): Promise<void> => {
   const { nickname, picURL, myTeam } = req.body;
 
   const authHeader = req.headers.authorization;
@@ -101,7 +101,7 @@ const editUser = async (req: Request, res: Response): Promise<void> => {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
-    const [sql, values] = editQuery({ uid, nickname, picURL, myTeam });
+    const [sql, values] = updateQuery({ uid, nickname, picURL, myTeam });
 
     const { rows } = await pool.query(sql, values);
 
@@ -124,4 +124,4 @@ const editUser = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { join, getUser, editUser };
+export { join, getUser, updateUser };

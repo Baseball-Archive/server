@@ -5,8 +5,8 @@ import * as privateArchiveController from "../controller/privateArchiveControlle
 const router = Router();
 
 router.post("/", authenticateFirebaseToken, privateArchiveController.createPrivateArchive);
-router.get("/", privateArchiveController.getPrivateArchives);
-router.put("/:archiveId", privateArchiveController.updatePrivateArchive);
-router.delete("/:archiveId", privateArchiveController.deletePrivateArchive);
+router.get("/", authenticateFirebaseToken, privateArchiveController.getPrivateArchives);
+router.put("/:archiveId", authenticateFirebaseToken, privateArchiveController.updatePrivateArchive);
+router.delete("/:archiveId", authenticateFirebaseToken, privateArchiveController.deletePrivateArchive);
 
 export default router;

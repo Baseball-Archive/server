@@ -33,42 +33,28 @@ type EditUserParams = {
   myTeam: string;
 };
 
-const updateUserWithoutPicURL = ({
-  uid,
-  nickname,
-  myTeam,
-}: {
-  uid: string;
-  nickname: string;
-  myTeam: string;
-}): [string, (string | null)[]] => {
-  const sql = `UPDATE users SET nickname = $1, my_team_id = $2 WHERE uid = $3`;
-  const values = [nickname, myTeam, uid];
-
-  return [sql, values];
-};
-
-const updateQueryWithPicURL = ({
-  uid,
-  nickname,
-  picURL,
-  myTeam,
-}: {
-  uid: string;
-  nickname: string;
-  picURL: string;
-  myTeam: string;
-}): [string, (string | null)[]] => {
-  const sql = `UPDATE users SET nickname = $1, pic_url = $2, my_team_id = $3 WHERE uid = $4`;
-  const values = [nickname, picURL, myTeam, uid];
-
-  return [sql, values];
-};
-
 export const updateQuery = ({ uid, nickname, picURL, myTeam }: EditUserParams): [string, (string | null)[]] => {
+  let sql = "UPDATE users SET ";
+  const values: (string | null)[] = [];
+  let index = 1;
+
+  // nickname 필드 추가
+  sql += `nickname = $${index++}`;
+  values.push(nickname);
+
+  // myTeam 필드 추가
+  sql += `, my_team_id = $${index++}`;
+  values.push(myTeam);
+
+  // picURL 필드가 있는 경우
   if (picURL) {
-    return updateQueryWithPicURL({ uid, nickname, picURL, myTeam });
-  } else {
-    return updateUserWithoutPicURL({ uid, nickname, myTeam });
+    sql += `, pic_url = $${index++}`;
+    values.push(picURL);
   }
+
+  // WHERE 조건 추가
+  sql += ` WHERE uid = $${index}`;
+  values.push(uid);
+
+  return [sql, values];
 };

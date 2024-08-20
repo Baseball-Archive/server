@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { joinQuery, getUserQuery, updateQuery } from "../model/usersModel";
+import { joinQuery, checkNicknameQuery, getUserQuery, updateQuery } from "../model/usersModel";
 import pool from "../postgresql";
 import admin from "../firebaseAdmin";
 
@@ -68,9 +68,21 @@ const join = async (req: Request, res: Response): Promise<void> => {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
-    const [sql, values] = joinQuery({ uid, nickname, myTeam });
+    const [checkSql, checkValues] = checkNicknameQuery(nickname);
+    const { rows } = await pool.query(checkSql, checkValues);
+    const nicknameCount = parseInt(rows[0].count, 10);
 
-    await pool.query(sql, values);
+    if (nicknameCount > 0) {
+      // 닉네임이 이미 존재하는 경우
+      res.status(StatusCodes.CONFLICT).json({
+        message: "닉네임이 이미 존재합니다.",
+      });
+      return;
+    }
+
+    const [insertSql, insertValues] = joinQuery({ uid, nickname, myTeam });
+
+    await pool.query(insertSql, insertValues);
 
     res.status(StatusCodes.CREATED).json({
       message: "사용자가 성공적으로 생성되었습니다",
@@ -101,8 +113,32 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
-    const [sql, values] = updateQuery({ uid, nickname, picURL, myTeam });
+    const [getUserSql, getUserValues] = getUserQuery({ uid });
+    const { rows: userRows } = await pool.query(getUserSql, getUserValues);
 
+    if (userRows.length === 0) {
+      res.status(StatusCodes.NOT_FOUND).json({
+        message: "사용자를 찾을 수 없습니다.",
+      });
+      return;
+    }
+
+    const currentNickname = userRows[0].nickname;
+
+    if (nickname !== currentNickname) {
+      const [checkSql, checkValues] = checkNicknameQuery(nickname);
+      const { rows: checkRows } = await pool.query(checkSql, checkValues);
+      const nicknameCount = parseInt(checkRows[0].count, 10);
+
+      if (nicknameCount > 0) {
+        res.status(StatusCodes.CONFLICT).json({
+          message: "이미 사용 중인 닉네임입니다.",
+        });
+        return;
+      }
+    }
+
+    const [sql, values] = updateQuery({ uid, nickname, picURL, myTeam });
     const { rows } = await pool.query(sql, values);
 
     res.status(StatusCodes.OK).json({

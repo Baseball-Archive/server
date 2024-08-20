@@ -1,10 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import admin from "firebase-admin";
+import admin from "../firebaseAdmin";
 import { StatusCodes } from "http-status-codes";
-
-admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
-});
 
 export const authenticateFirebaseToken = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;

@@ -1,8 +1,7 @@
 import express, { Request, Response } from "express";
-import { s3 } from "../s3Uploader";
+import { s3, upload } from "../s3Uploader";
 import { PutObjectCommand, PutObjectCommandInput } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
-import { upload } from "../s3Uploader";
 
 const router = express.Router();
 
@@ -20,7 +19,6 @@ router.post("/upload", upload.single("profileImage"), async (req: Request, res: 
       Key: fileName,
       Body: fileContent,
       ContentType: req.file.mimetype,
-      ACL: "public-read", // 'public-read'는 ObjectCannedACL의 값입니다.
     };
 
     const command = new PutObjectCommand(uploadParams);

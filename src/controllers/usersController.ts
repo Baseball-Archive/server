@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { joinQuery, checkNicknameQuery, getUserQuery, updateQuery } from "../model/usersModel";
-import pool from "../postgresql";
-import admin from "../firebaseAdmin";
+import { joinQuery, checkNicknameQuery, getUserQuery, updateQuery } from "../models/usersModel";
+import pool from "../../config/postgresql";
+import admin from "../../config/firebaseAdmin";
 
 const getUser = async (req: Request, res: Response) => {
   const authHeader = req.headers.authorization;

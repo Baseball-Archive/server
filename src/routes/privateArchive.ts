@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { authenticateFirebaseToken } from "../middleware/auth";
-import * as privateArchiveController from "../controller/privateArchiveController";
+import { authenticateFirebaseToken } from "../middlewares/auth";
+import * as privateArchiveController from "../controllers/privateArchiveController";
 
 const router = Router();
 

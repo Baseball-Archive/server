@@ -11,10 +11,10 @@ export const authenticateFirebaseToken = async (req: Request, res: Response, nex
       .json({ message: "Authorization 헤더가 누락되었거나 잘못된 형식입니다." });
   }
 
-  const idToken = authHeader.split("Bearer ")[1];
+  const [, token] = authorization.split("Bearer ");
 
   try {
-    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    const decodedToken = await admin.auth().verifyIdToken(token);
     req.user = {
       uid: decodedToken.uid,
       email: decodedToken.email,

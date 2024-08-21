@@ -17,8 +17,10 @@ export const createPrivateArchiveModel = async (archiveData: ArchiveData) => {
 
 export const getPrivateArchivesModel = async (user_uid: string) => {
   const query = `
-    SELECT * FROM archive WHERE user_uid = $1
-  `;
+  SELECT id, schedule_id, weather, home_team_score, away_team_score, title, content, pic_url, is_public, created_at, updated_at
+  FROM archive
+  WHERE user_uid = $1
+`;
   const values = [user_uid];
 
   const result = await pool.query(query, values);

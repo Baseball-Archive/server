@@ -6,8 +6,8 @@ export const createPrivateArchiveModel = async (archiveData: ArchiveData) => {
     archiveData;
 
   const query = `
-    INSERT INTO archive (schedule_id, weather, home_team_score, away_team_score, title, content, pic_url, is_public, created_at, updated_at, user_uid)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id
+    INSERT INTO archive (schedule_id, weather, home_team_score, away_team_score, title, content, pic_url, is_public,user_uid)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id
   `;
   const values = [schedule_id, weather, home_team_score, away_team_score, title, content, pic_url, is_public, user_uid];
 

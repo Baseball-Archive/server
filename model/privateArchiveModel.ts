@@ -1,7 +1,7 @@
 import pool from "../postgresql";
 import { ArchiveData } from "../types/archive";
 
-export const createPrivateArchive = async (archiveData: ArchiveData) => {
+export const createPrivateArchiveModel = async (archiveData: ArchiveData) => {
   const { schedule_id, weather, home_team_score, away_team_score, title, content, pic_url, is_public, user_uid } =
     archiveData;
   const created_at = new Date();
@@ -29,7 +29,7 @@ export const createPrivateArchive = async (archiveData: ArchiveData) => {
   return result.rows[0].id;
 };
 
-export const getPrivateArchives = async (user_uid: string) => {
+export const getPrivateArchivesModel = async (user_uid: string) => {
   const query = `
     SELECT * FROM archive WHERE user_uid = $1
   `;
@@ -39,7 +39,7 @@ export const getPrivateArchives = async (user_uid: string) => {
   return result.rows;
 };
 
-export const updatePrivateArchive = async (archiveId: number, archiveData: ArchiveData) => {
+export const updatePrivateArchiveModel = async (archiveId: number, archiveData: ArchiveData) => {
   const { weather, home_team_score, away_team_score, title, content, pic_url, is_public } = archiveData;
   const updated_at = new Date();
 
@@ -54,7 +54,7 @@ export const updatePrivateArchive = async (archiveId: number, archiveData: Archi
   return result.rows[0].id;
 };
 
-export const deletePrivateArchive = async (archiveId: number) => {
+export const deletePrivateArchiveModel = async (archiveId: number) => {
   const query = `
     DELETE FROM archive WHERE id = $1 RETURNING id
   `;

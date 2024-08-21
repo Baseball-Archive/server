@@ -3,9 +3,9 @@ import admin from "../firebaseAdmin";
 import { StatusCodes } from "http-status-codes";
 
 export const authenticateFirebaseToken = async (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization;
+  const authorization = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  if (!authorization || !authorization.startsWith("Bearer ")) {
     return res
       .status(StatusCodes.UNAUTHORIZED)
       .json({ message: "Authorization 헤더가 누락되었거나 잘못된 형식입니다." });

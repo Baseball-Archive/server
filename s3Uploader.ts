@@ -12,12 +12,14 @@ const s3 = new S3Client({
 });
 
 // Multer 설정
-const storage = multer.memoryStorage(); // 파일을 메모리에 저장합니다.
+const storage = multer.memoryStorage();
 
 const upload = multer({
   storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 파일 크기를 5MB로 제한합니다.
+  },
   fileFilter: (req: Request, file, cb: FileFilterCallback) => {
-    // 파일 필터링 로직을 추가할 수 있습니다.
     cb(null, true);
   },
 });

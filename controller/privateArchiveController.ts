@@ -41,7 +41,7 @@ export const getPrivateArchives = async (req: Request, res: Response) => {
 export const updatePrivateArchive = async (req: Request, res: Response) => {
   try {
     const { archiveId } = req.params;
-    const updatedArchiveId = await updatePrivateArchiveModel(parseInt(archiveId), req.body);
+    const updatedArchiveId = await updatePrivateArchiveModel(parseInt(archiveId, 10), req.body);
     res.status(StatusCodes.OK).json({ message: "updated successfully", archiveId: updatedArchiveId });
   } catch (error) {
     console.error(error);
@@ -52,7 +52,7 @@ export const updatePrivateArchive = async (req: Request, res: Response) => {
 export const deletePrivateArchive = async (req: Request, res: Response) => {
   try {
     const { archiveId } = req.params;
-    const deletedArchiveId = await deletePrivateArchiveModel(parseInt(archiveId));
+    const deletedArchiveId = await deletePrivateArchiveModel(parseInt(archiveId, 10));
     res.status(StatusCodes.OK).json({ message: "deleted successfully", archiveId: deletedArchiveId });
   } catch (error) {
     console.error(error);

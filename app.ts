@@ -1,9 +1,9 @@
 import express, { Application } from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import archiveRouter from "./routes/privateArchive";
-import usersRouter from "./routes/users";
-import uploadRouter from "./routes/awsUpload";
+import archiveRouter from "./src/routes/privateArchive";
+import usersRouter from "./src/routes/users";
+import uploadRouter from "./src/routes/awsUpload";
 
 dotenv.config();
 

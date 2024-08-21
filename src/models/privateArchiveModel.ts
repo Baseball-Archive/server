@@ -1,4 +1,4 @@
-import pool from "../postgresql";
+import pool from "../../config/postgresql";
 import { ArchiveData } from "../types/archive";
 
 export const createPrivateArchiveModel = async (archiveData: ArchiveData) => {

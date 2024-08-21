@@ -5,7 +5,7 @@ import {
   getPrivateArchivesModel,
   updatePrivateArchiveModel,
   deletePrivateArchiveModel,
-} from "../model/privateArchiveModel";
+} from "../models/privateArchiveModel";
 
 export const createPrivateArchive = async (req: Request, res: Response) => {
   try {

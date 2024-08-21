@@ -19,7 +19,7 @@ export const authenticateFirebaseToken = async (req: Request, res: Response, nex
       uid: decodedToken.uid,
       email: decodedToken.email,
     };
-    return next();
+    next();
   } catch (error) {
     console.error("토큰 검증 중 오류가 발생했습니다.", error);
     res.status(StatusCodes.UNAUTHORIZED).json({ message: "유효하지 않거나 만료된 토큰입니다." });

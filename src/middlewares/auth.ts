@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import admin from "../firebaseAdmin";
+import admin from "../../config/firebaseAdmin";
 import { StatusCodes } from "http-status-codes";
 
 export const authenticateFirebaseToken = async (req: Request, res: Response, next: NextFunction) => {
@@ -15,10 +15,7 @@ export const authenticateFirebaseToken = async (req: Request, res: Response, nex
 
   try {
     const decodedToken = await admin.auth().verifyIdToken(token);
-    req.user = {
-      uid: decodedToken.uid,
-      email: decodedToken.email,
-    };
+    req.user = { uid: decodedToken.uid };
     next();
   } catch (error) {
     console.error("토큰 검증 중 오류가 발생했습니다.", error);

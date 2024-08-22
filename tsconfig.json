@@ -10,6 +10,6 @@
     "strictNullChecks": true, // null 및 undefined 값에 대한 엄격한 검사
     "noImplicitAny": true // any 타입 암시적 사용 금지
   },
-  "include": ["./**/*.ts", "./types/**/*.d.ts"], // 포함할 파일 경로 (루트 디렉터리에서 모든 TypeScript 파일)
+  "include": ["./**/*.ts", "src/types/**/*.d.ts"], // 포함할 파일 경로 (루트 디렉터리에서 모든 TypeScript 파일)
   "exclude": ["node_modules", "dist"] // 제외할 파일 경로
 }

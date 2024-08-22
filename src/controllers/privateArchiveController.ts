@@ -5,7 +5,7 @@ import {
   getPrivateArchivesModel,
   updatePrivateArchiveModel,
   deletePrivateArchiveModel,
-} from "../model/privateArchiveModel";
+} from "../models/privateArchiveModel";
 
 export const createPrivateArchive = async (req: Request, res: Response) => {
   try {
@@ -14,7 +14,7 @@ export const createPrivateArchive = async (req: Request, res: Response) => {
       return res.status(StatusCodes.UNAUTHORIZED).json({ message: "User not authenticated" });
     }
 
-    const archiveData = { ...req.body, userUid };
+    const archiveData = { ...req.body, user_uid: userUid };
     const archiveId = await createPrivateArchiveModel(archiveData);
     res.status(StatusCodes.CREATED).json({ message: "created successfully", archive_id: archiveId });
   } catch (error) {

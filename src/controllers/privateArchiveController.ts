@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import {
-  createPrivateArchiveModel,
-  getPrivateArchivesModel,
-  updatePrivateArchiveModel,
-  deletePrivateArchiveModel,
-} from "../models/privateArchiveModel";
+  createPrivateArchiveRepository,
+  getPrivateArchivesRepository,
+  updatePrivateArchiveRepository,
+  deletePrivateArchiveRepository,
+} from "../Repositories/privateArchiveRepository";
 
 export const createPrivateArchive = async (req: Request, res: Response) => {
   try {
@@ -15,7 +15,7 @@ export const createPrivateArchive = async (req: Request, res: Response) => {
     }
 
     const archiveData = { ...req.body, user_uid: userUid };
-    const archiveId = await createPrivateArchiveModel(archiveData);
+    const archiveId = await createPrivateArchiveRepository(archiveData);
     res.status(StatusCodes.CREATED).json({ message: "created successfully", archive_id: archiveId });
   } catch (error) {
     console.error(error);
@@ -30,7 +30,7 @@ export const getPrivateArchives = async (req: Request, res: Response) => {
       return res.status(StatusCodes.UNAUTHORIZED).json({ message: "User not authenticated" });
     }
 
-    const archives = await getPrivateArchivesModel(userUid);
+    const archives = await getPrivateArchivesRepository(userUid);
     res.status(StatusCodes.OK).json(archives);
   } catch (error) {
     console.error(error);
@@ -41,7 +41,7 @@ export const getPrivateArchives = async (req: Request, res: Response) => {
 export const updatePrivateArchive = async (req: Request, res: Response) => {
   try {
     const { archiveId } = req.params;
-    const updatedArchiveId = await updatePrivateArchiveModel(parseInt(archiveId, 10), req.body);
+    const updatedArchiveId = await updatePrivateArchiveRepository(parseInt(archiveId, 10), req.body);
     res.status(StatusCodes.OK).json({ message: "updated successfully", archiveId: updatedArchiveId });
   } catch (error) {
     console.error(error);
@@ -52,7 +52,7 @@ export const updatePrivateArchive = async (req: Request, res: Response) => {
 export const deletePrivateArchive = async (req: Request, res: Response) => {
   try {
     const { archiveId } = req.params;
-    const deletedArchiveId = await deletePrivateArchiveModel(parseInt(archiveId, 10));
+    const deletedArchiveId = await deletePrivateArchiveRepository(parseInt(archiveId, 10));
     res.status(StatusCodes.OK).json({ message: "deleted successfully", archiveId: deletedArchiveId });
   } catch (error) {
     console.error(error);

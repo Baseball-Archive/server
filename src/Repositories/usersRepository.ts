@@ -6,7 +6,7 @@ interface UserData {
   myTeam: string;
 }
 
-export const joinModel = async (userData: UserData): Promise<string> => {
+export const joinRepository = async (userData: UserData): Promise<string> => {
   const { uid, nickname, myTeam } = userData;
 
   const query = `
@@ -19,7 +19,7 @@ export const joinModel = async (userData: UserData): Promise<string> => {
   return result.rows[0].uid;
 };
 
-export const checkNicknameModel = async (nickname: string): Promise<number> => {
+export const checkNicknameRepository = async (nickname: string): Promise<number> => {
   const query = `
     SELECT COUNT(*) 
     FROM users 
@@ -31,7 +31,7 @@ export const checkNicknameModel = async (nickname: string): Promise<number> => {
   return parseInt(result.rows[0].count, 10);
 };
 
-export const getUserModel = async (
+export const getUserRepository = async (
   uid: string,
 ): Promise<{ nickname: string; pic_url: string; my_team_id: string } | null> => {
   const query = `
@@ -56,7 +56,7 @@ type EditUserParams = {
   picURL?: string;
   myTeam: string;
 };
-export const updateUserModel = async ({ uid, nickname, picURL, myTeam }: EditUserParams): Promise<void> => {
+export const updateUserRepository = async ({ uid, nickname, picURL, myTeam }: EditUserParams): Promise<void> => {
   let sql = "UPDATE users SET ";
   const values: (string | null)[] = [];
   let index = 1;

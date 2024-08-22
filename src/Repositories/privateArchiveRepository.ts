@@ -1,7 +1,7 @@
 import pool from "../../config/postgresql";
 import { ArchiveData } from "../types/archive";
 
-export const createPrivateArchiveModel = async (archiveData: ArchiveData) => {
+export const createPrivateArchiveRepository = async (archiveData: ArchiveData) => {
   const { schedule_id, weather, home_team_score, away_team_score, title, content, pic_url, is_public, user_uid } =
     archiveData;
 
@@ -15,7 +15,7 @@ export const createPrivateArchiveModel = async (archiveData: ArchiveData) => {
   return result.rows[0].id;
 };
 
-export const getPrivateArchivesModel = async (user_uid: string) => {
+export const getPrivateArchivesRepository = async (user_uid: string) => {
   const query = `
   SELECT id, schedule_id, weather, home_team_score, away_team_score, title, content, pic_url, is_public, created_at, updated_at
   FROM archive
@@ -27,7 +27,7 @@ export const getPrivateArchivesModel = async (user_uid: string) => {
   return result.rows;
 };
 
-export const updatePrivateArchiveModel = async (archiveId: number, archiveData: ArchiveData) => {
+export const updatePrivateArchiveRepository = async (archiveId: number, archiveData: ArchiveData) => {
   const { weather, home_team_score, away_team_score, title, content, pic_url, is_public } = archiveData;
   const updated_at = new Date();
 
@@ -42,7 +42,7 @@ export const updatePrivateArchiveModel = async (archiveId: number, archiveData: 
   return result.rows[0].id;
 };
 
-export const deletePrivateArchiveModel = async (archiveId: number) => {
+export const deletePrivateArchiveRepository = async (archiveId: number) => {
   const query = `
     DELETE FROM archive WHERE id = $1 RETURNING id
   `;

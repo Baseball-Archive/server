@@ -1,29 +1,53 @@
-export const joinQuery = ({
-  uid,
-  nickname,
-  myTeam,
-}: {
+import pool from "../../config/postgresql";
+
+interface UserData {
   uid: string;
   nickname: string;
   myTeam: string;
-}): [string, any[]] => {
-  const sql = `INSERT INTO users (uid, nickname, my_team_id) VALUES ($1, $2, $3);`;
+}
+
+export const joinModel = async (userData: UserData): Promise<string> => {
+  const { uid, nickname, myTeam } = userData;
+
+  const query = `
+    INSERT INTO users (uid, nickname, my_team_id)
+    VALUES ($1, $2, $3) RETURNING uid
+  `;
   const values = [uid, nickname, myTeam];
 
-  return [sql, values];
+  const result = await pool.query(query, values);
+  return result.rows[0].uid;
 };
 
-export const checkNicknameQuery = (nickname: string): [string, any[]] => {
-  const sql = `SELECT COUNT(*) FROM users WHERE nickname = $1`;
+export const checkNicknameModel = async (nickname: string): Promise<number> => {
+  const query = `
+    SELECT COUNT(*) 
+    FROM users 
+    WHERE nickname = $1
+  `;
   const values = [nickname];
-  return [sql, values];
+
+  const result = await pool.query(query, values);
+  return parseInt(result.rows[0].count, 10);
 };
 
-export const getUserQuery = ({ uid }: { uid: string }): [string, any[]] => {
-  const sql = `SELECT nickname, pic_url, my_team_id FROM users WHERE uid = $1`;
+export const getUserModel = async (
+  uid: string,
+): Promise<{ nickname: string; pic_url: string; my_team_id: string } | null> => {
+  const query = `
+    SELECT nickname, pic_url, my_team_id 
+    FROM users 
+    WHERE uid = $1
+  `;
   const values = [uid];
 
-  return [sql, values];
+  const result = await pool.query(query, values);
+
+  if (result.rows.length > 0) {
+    return result.rows[0];
+  } else {
+    return null;
+  }
 };
 
 type EditUserParams = {
@@ -32,8 +56,7 @@ type EditUserParams = {
   picURL?: string;
   myTeam: string;
 };
-
-export const updateQuery = ({ uid, nickname, picURL, myTeam }: EditUserParams): [string, (string | null)[]] => {
+export const updateUserModel = async ({ uid, nickname, picURL, myTeam }: EditUserParams): Promise<void> => {
   let sql = "UPDATE users SET ";
   const values: (string | null)[] = [];
   let index = 1;
@@ -56,5 +79,6 @@ export const updateQuery = ({ uid, nickname, picURL, myTeam }: EditUserParams): 
   sql += ` WHERE uid = $${index}`;
   values.push(uid);
 
-  return [sql, values];
+  // 쿼리 실행
+  await pool.query(sql, values);
 };

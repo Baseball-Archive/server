@@ -1,8 +1,6 @@
 import { Router } from "express";
-import {
-    viewPost,
-    viewPostDetail
-} from "../controllers/publicArchiveController";
+import { authenticateFirebaseToken } from "../middlewares/auth";
+import { viewPost, viewPostDetail } from "../controllers/publicArchiveController";
 
 const router = Router();
 

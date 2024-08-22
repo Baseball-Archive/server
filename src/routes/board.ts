@@ -1,12 +1,6 @@
 import { Router } from "express";
 import { authenticateFirebaseToken } from "../middlewares/auth";
-import {
-    writePost,
-    updatePost,
-    deletePost,
-    viewPostList,
-    viewPostDetail
-} from "../controllers/boardController";
+import { writePost, updatePost, deletePost, viewPostList, viewPostDetail } from "../controllers/boardController";
 
 const router = Router();
 

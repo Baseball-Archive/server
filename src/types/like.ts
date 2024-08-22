@@ -1,9 +1,9 @@
 export interface LikeArchiveData {
-    userUid: string;
-    archiveId: number;
+  userUid: string;
+  archiveId: number;
 }
 
 export interface LikeBoardData {
-    userUid: string;
-    boardId: number;
+  userUid: string;
+  boardId: number;
 }

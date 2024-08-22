@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { authenticateFirebaseToken } from "../middlewares/auth";
 import {
-    addLikeToArchive,
-    removeLikeFromArchive,
-    addLikeToBoard,
-    removeLikeFromBoard
+  addLikeToArchive,
+  removeLikeFromArchive,
+  addLikeToBoard,
+  removeLikeFromBoard,
 } from "../controllers/likesController";
 
 const router = Router();

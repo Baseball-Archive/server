@@ -1,9 +1,6 @@
 import { Router } from "express";
-import {
-    addComment,
-    modifyComment,
-    deleteComment
-} from "../controllers/commentsController";
+import { authenticateFirebaseToken } from "../middlewares/auth";
+import { addComment, modifyComment, deleteComment } from "../controllers/commentsController";
 
 const router = Router();
 

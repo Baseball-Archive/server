@@ -5,7 +5,7 @@ import {
   removeLikeFromArchiveRepository,
   addLikeToBoardRepository,
   removeLikeFromBoardRepository,
-} from "../models/likesModel";
+} from "../repositories/likesRepository";
 
 export const addLikeToArchive = async (req: Request, res: Response) => {
   try {

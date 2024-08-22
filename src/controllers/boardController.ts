@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import {
-  writeRepository,
-  updateRepository,
-  deleteRepository,
-  viewListRepository,
-  viewDetailRepository,
-} from "../models/boardModel";
+  addPostRepository,
+  updatePostRepository,
+  deletePostRepository,
+  viewPostListRepository,
+  viewPostDetailRepository,
+} from "../repositories/boardRepository";
 
-export const writePost = async (req: Request, res: Response) => {
+export const addPost = async (req: Request, res: Response) => {
   try {
+    const { scheduleId, title, content, picUrl } = req.body;
     const userUid = req.headers.authorization;
     if (!userUid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
@@ -17,7 +18,7 @@ export const writePost = async (req: Request, res: Response) => {
       });
     }
 
-    await writeRepository({ ...req.body, userUid });
+    await addPostRepository({ scheduleId, title, content, picUrl, userUid });
 
     return res.status(StatusCodes.CREATED).json({
       message: "게시글을 성공적으로 업로드했습니다.",
@@ -33,6 +34,7 @@ export const writePost = async (req: Request, res: Response) => {
 export const updatePost = async (req: Request, res: Response) => {
   try {
     const boardId = parseInt(req.params.boardId, 10);
+    const { scheduleId, title, content, picUrl } = req.body;
     const userUid = req.headers.authorization;
     if (!userUid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
@@ -40,7 +42,7 @@ export const updatePost = async (req: Request, res: Response) => {
       });
     }
 
-    await updateRepository(boardId, req.body);
+    await updatePostRepository(boardId, { scheduleId, title, content, picUrl, userUid });
 
     return res.status(StatusCodes.OK).json({
       message: "게시글을 성공적으로 수정했습니다.",
@@ -63,7 +65,7 @@ export const deletePost = async (req: Request, res: Response) => {
       });
     }
 
-    await deleteRepository(boardId);
+    await deletePostRepository(boardId);
 
     return res.status(StatusCodes.OK).json({
       message: "게시글을 성공적으로 삭제했습니다.",
@@ -85,7 +87,7 @@ export const viewPostList = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await viewListRepository();
+    const result = await viewPostListRepository();
 
     return res.status(StatusCodes.OK).json(result);
   } catch (err: unknown) {
@@ -106,7 +108,7 @@ export const viewPostDetail = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await viewDetailRepository(boardId);
+    const result = await viewPostDetailRepository(boardId);
 
     return res.status(StatusCodes.OK).json(result);
   } catch (err: unknown) {

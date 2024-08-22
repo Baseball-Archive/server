@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import archiveRouter from "./src/routes/privateArchive";
 import boardRouter from "./src/routes/board";
 import likeRouter from "./src/routes/likes";
+import commentRouter from "./src/routes/comments";
 import usersRouter from "./src/routes/users";
 import uploadRouter from "./src/routes/awsUpload";
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use("/archive", archiveRouter);
 app.use("/board", boardRouter);
 app.use("/likes", likeRouter);
+app.use("/comments", commentRouter);
 app.use("/users", usersRouter);
 app.use("/", uploadRouter);
 

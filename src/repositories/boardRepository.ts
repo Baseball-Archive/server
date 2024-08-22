@@ -1,7 +1,7 @@
 import pool from "../../config/postgresql";
 import { BoardData } from "../types/board";
 
-export const writeRepository = async (boardData: BoardData) => {
+export const addPostRepository = async (boardData: BoardData) => {
   const { scheduleId, title, content, picUrl, userUid } = boardData;
 
   const sql = `
@@ -13,7 +13,7 @@ export const writeRepository = async (boardData: BoardData) => {
   await pool.query(sql, values);
 };
 
-export const updateRepository = async (boardId: number, boardData: BoardData) => {
+export const updatePostRepository = async (boardId: number, boardData: BoardData) => {
   const { scheduleId, title, content, picUrl } = boardData;
 
   const sql = `
@@ -25,7 +25,7 @@ export const updateRepository = async (boardId: number, boardData: BoardData) =>
   await pool.query(sql, values);
 };
 
-export const deleteRepository = async (boardId: number) => {
+export const deletePostRepository = async (boardId: number) => {
   const sql = `
         DELETE FROM board WHERE id = $1 
     `;
@@ -33,7 +33,7 @@ export const deleteRepository = async (boardId: number) => {
   await pool.query(sql, [boardId]);
 };
 
-export const viewListRepository = async () => {
+export const viewPostListRepository = async () => {
   const sql = `
         SELECT home_team_id, away_team_id, title, created_at, user_uid
         FROM board LEFT JOIN baseball_schedule
@@ -44,7 +44,7 @@ export const viewListRepository = async () => {
   return result.rows;
 };
 
-export const viewDetailRepository = async (boardId: number) => {
+export const viewPostDetailRepository = async (boardId: number) => {
   const sql = `
         SELECT match_date, home_team_id, away_team_id, title, content, pic_url, created_at, user_uid
         FROM board LEFT JOIN baseball_schedule

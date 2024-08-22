@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { joinQuery, checkNicknameQuery, getUserQuery, updateQuery } from "../models/usersModel";
+import { joinQuery, checkNicknameQuery, getUserQuery, updateQuery } from "../repositories/usersRepository.ts";
 import pool from "../../config/postgresql";
 import admin from "../../config/firebaseAdmin";
 

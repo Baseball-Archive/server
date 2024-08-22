@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { joinModel, checkNicknameModel, getUserModel, updateUserModel } from "../models/usersModel";
+import {
+  joinRepository,
+  checkNicknameRepository,
+  getUserRepository,
+  updateUserRepository,
+} from "../Repositories/usersRepository";
 import admin from "../../config/firebaseAdmin";
 
 const getUser = async (req: Request, res: Response) => {
@@ -19,7 +24,7 @@ const getUser = async (req: Request, res: Response) => {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
-    const userData = await getUserModel(uid);
+    const userData = await getUserRepository(uid);
 
     if (!userData) {
       res.status(StatusCodes.NOT_FOUND).json({
@@ -66,7 +71,7 @@ const join = async (req: Request, res: Response): Promise<void> => {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
-    const nicknameCount = await checkNicknameModel(nickname);
+    const nicknameCount = await checkNicknameRepository(nickname);
 
     if (nicknameCount > 0) {
       // 닉네임이 이미 존재하는 경우
@@ -76,7 +81,7 @@ const join = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    await joinModel({ uid, nickname, myTeam });
+    await joinRepository({ uid, nickname, myTeam });
 
     res.status(StatusCodes.CREATED).json({
       message: "사용자가 성공적으로 생성되었습니다",
@@ -107,7 +112,7 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
-    const userData = await getUserModel(uid);
+    const userData = await getUserRepository(uid);
 
     if (!userData) {
       res.status(StatusCodes.NOT_FOUND).json({
@@ -119,7 +124,7 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
     const currentNickname = userData.nickname;
 
     if (nickname !== currentNickname) {
-      const nicknameCount = await checkNicknameModel(nickname);
+      const nicknameCount = await checkNicknameRepository(nickname);
 
       if (nicknameCount > 0) {
         res.status(StatusCodes.CONFLICT).json({
@@ -129,7 +134,7 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
       }
     }
 
-    const rows = await updateUserModel({ uid, nickname, picURL, myTeam });
+    const rows = await updateUserRepository({ uid, nickname, picURL, myTeam });
 
     res.status(StatusCodes.OK).json({
       message: "사용자 데이터를 성공적으로 수정했습니다.",

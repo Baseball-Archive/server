@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { joinQuery, checkNicknameQuery, getUserQuery, updateQuery } from "../models/usersModel";
-import pool from "../../config/postgresql";
+import { joinModel, checkNicknameModel, getUserModel, updateUserModel } from "../models/usersModel";
 import admin from "../../config/firebaseAdmin";
 
 const getUser = async (req: Request, res: Response) => {
@@ -20,19 +19,18 @@ const getUser = async (req: Request, res: Response) => {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
-    const [sql, values] = getUserQuery({ uid });
+    const userData = await getUserModel(uid);
 
-    const { rows } = await pool.query(sql, values);
-
-    if (rows.length === 0) {
+    if (!userData) {
       res.status(StatusCodes.NOT_FOUND).json({
-        message: "사용자를 찾을 수 없습니다",
+        message: "사용자를 찾을 수 없습니다.",
       });
+      return;
     }
 
     res.status(StatusCodes.OK).json({
-      message: "사용자 데이터를 성공적으로 가져왔습니다",
-      data: rows[0],
+      message: "사용자 데이터를 성공적으로 가져왔습니다.",
+      data: userData,
     });
   } catch (err: unknown) {
     if (err instanceof Error) {
@@ -43,7 +41,7 @@ const getUser = async (req: Request, res: Response) => {
     } else {
       console.error("예상치 못한 오류 발생", err);
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: "사용자 데이터를 가져오는 중 예상치 못한 오류가 발생했습니다",
+        message: "사용자 데이터를 가져오는 중 예상치 못한 오류가 발생했습니다.",
       });
     }
   }
@@ -68,9 +66,7 @@ const join = async (req: Request, res: Response): Promise<void> => {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
-    const [checkSql, checkValues] = checkNicknameQuery(nickname);
-    const { rows } = await pool.query(checkSql, checkValues);
-    const nicknameCount = parseInt(rows[0].count, 10);
+    const nicknameCount = await checkNicknameModel(nickname);
 
     if (nicknameCount > 0) {
       // 닉네임이 이미 존재하는 경우
@@ -80,9 +76,7 @@ const join = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const [insertSql, insertValues] = joinQuery({ uid, nickname, myTeam });
-
-    await pool.query(insertSql, insertValues);
+    await joinModel({ uid, nickname, myTeam });
 
     res.status(StatusCodes.CREATED).json({
       message: "사용자가 성공적으로 생성되었습니다",
@@ -113,22 +107,19 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
-    const [getUserSql, getUserValues] = getUserQuery({ uid });
-    const { rows: userRows } = await pool.query(getUserSql, getUserValues);
+    const userData = await getUserModel(uid);
 
-    if (userRows.length === 0) {
+    if (!userData) {
       res.status(StatusCodes.NOT_FOUND).json({
         message: "사용자를 찾을 수 없습니다.",
       });
       return;
     }
 
-    const currentNickname = userRows[0].nickname;
+    const currentNickname = userData.nickname;
 
     if (nickname !== currentNickname) {
-      const [checkSql, checkValues] = checkNicknameQuery(nickname);
-      const { rows: checkRows } = await pool.query(checkSql, checkValues);
-      const nicknameCount = parseInt(checkRows[0].count, 10);
+      const nicknameCount = await checkNicknameModel(nickname);
 
       if (nicknameCount > 0) {
         res.status(StatusCodes.CONFLICT).json({
@@ -138,12 +129,11 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
       }
     }
 
-    const [sql, values] = updateQuery({ uid, nickname, picURL, myTeam });
-    const { rows } = await pool.query(sql, values);
+    const rows = await updateUserModel({ uid, nickname, picURL, myTeam });
 
     res.status(StatusCodes.OK).json({
       message: "사용자 데이터를 성공적으로 수정했습니다.",
-      data: rows[0],
+      data: rows,
     });
   } catch (err: unknown) {
     if (err instanceof Error) {

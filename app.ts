@@ -7,6 +7,7 @@ import likeRouter from "./src/routes/likes";
 import usersRouter from "./src/routes/users";
 import uploadRouter from "./src/routes/awsUpload";
 import scheduleRouter from "./src/routes/schedule";
+import rankingRouter from "./src/routes/ranking";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use("/likes", likeRouter);
 app.use("/users", usersRouter);
 app.use("/", uploadRouter);
 app.use("/schedules", scheduleRouter);
+app.use("/ranking", rankingRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { scrapeSchedule } from "../scraper/scheduleScraper";
-import { saveSchedulesRepository } from "../Repositories/scheduleRepository";
+import { saveSchedulesRepository, getSchedulesRepository } from "../Repositories/scheduleRepository";
 
 export const saveSchedules = async (req: Request, res: Response) => {
   try {

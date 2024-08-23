@@ -27,3 +27,14 @@ export const saveSchedulesRepository = async (schedules: ScheduleData[]) => {
   }
 };
 
+export const getSchedulesRepository = async (date: string) => {
+  const query = `
+      SELECT match_date, time, stadium, away_team_id, home_team_id
+      FROM baseball_schedule
+      WHERE match_date = $1
+    `;
+  const values = [date];
+
+  const result = await pool.query(query, values);
+  return result.rows;
+};

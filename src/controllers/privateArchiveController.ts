@@ -31,6 +31,11 @@ export const getPrivateArchives = async (req: Request, res: Response) => {
     }
 
     const archives = await getPrivateArchivesRepository(userUid);
+
+    if (archives.length === 0) {
+      return res.status(StatusCodes.NOT_FOUND).json({ message: "No archives found for this user" });
+    }
+
     res.status(StatusCodes.OK).json(archives);
   } catch (error) {
     console.error(error);

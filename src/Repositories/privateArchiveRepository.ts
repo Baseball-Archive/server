@@ -17,9 +17,33 @@ export const createPrivateArchiveRepository = async (archiveData: ArchiveData) =
 
 export const getPrivateArchivesRepository = async (user_uid: string) => {
   const query = `
-  SELECT id, schedule_id, weather, home_team_score, away_team_score, title, content, pic_url, is_public, created_at, updated_at
-  FROM archive
-  WHERE user_uid = $1
+    SELECT
+      a.id,
+      a.schedule_id,
+      a.weather,
+      a.home_team_score,
+      a.away_team_score,
+      a.title,
+      a.content,
+      a.pic_url,
+      a.is_public,
+      a.created_at,
+      a.updated_at,
+      u.nickname,
+      u.pic_url AS user_pic_url,
+      s.match_date,
+      s.time,
+      s.stadium,
+      s.away_team_id,
+      s.home_team_id
+    FROM
+      archive a
+    JOIN
+      users u ON a.user_uid = u.uid
+    JOIN
+      baseball_schedule s ON a.schedule_id = s.id
+    WHERE
+      a.user_uid = $1
 `;
   const values = [user_uid];
 

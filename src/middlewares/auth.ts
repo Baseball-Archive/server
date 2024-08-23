@@ -15,10 +15,14 @@ export const authenticateFirebaseToken = async (req: Request, res: Response, nex
 
   try {
     const decodedToken = await admin.auth().verifyIdToken(token);
-    req.user = { uid: decodedToken.uid };
+    req.user = {
+      uid: decodedToken.uid,
+    };
     next();
-  } catch (error) {
-    console.error("토큰 검증 중 오류가 발생했습니다.", error);
-    res.status(StatusCodes.UNAUTHORIZED).json({ message: "유효하지 않거나 만료된 토큰입니다." });
+  } catch (err) {
+    console.error("토큰 검증 중 오류가 발생했습니다.", err);
+    res.status(StatusCodes.UNAUTHORIZED).json({
+      message: "유효하지 않거나 이미 만료된 토큰입니다.",
+    });
   }
 };

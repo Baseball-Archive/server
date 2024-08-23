@@ -71,16 +71,6 @@ const join = async (req: Request, res: Response): Promise<void> => {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
-    const nicknameCount = await checkNicknameRepository(nickname);
-
-    if (nicknameCount > 0) {
-      // 닉네임이 이미 존재하는 경우
-      res.status(StatusCodes.CONFLICT).json({
-        message: "닉네임이 이미 존재합니다.",
-      });
-      return;
-    }
-
     await joinRepository({ uid, nickname, myTeam });
 
     res.status(StatusCodes.CREATED).json({
@@ -90,6 +80,36 @@ const join = async (req: Request, res: Response): Promise<void> => {
     console.error("쿼리 실행 중 오류 발생", (err as Error).stack);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: "사용자 생성 중 오류 발생",
+    });
+  }
+};
+
+const checkNickname = async (req: Request, res: Response): Promise<void> => {
+  const { nickname } = req.body;
+
+  if (!nickname) {
+    res.status(StatusCodes.BAD_REQUEST).json({
+      message: "닉네임이 제공되지 않았습니다.",
+    });
+    return;
+  }
+
+  try {
+    const nicknameCount = await checkNicknameRepository(nickname);
+
+    if (nicknameCount > 0) {
+      res.status(StatusCodes.CONFLICT).json({
+        message: "닉네임이 이미 존재합니다.",
+      });
+    } else {
+      res.status(StatusCodes.OK).json({
+        message: "사용 가능한 닉네임입니다.",
+      });
+    }
+  } catch (error) {
+    console.error("닉네임 확인 중 오류가 발생했습니다:", error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "닉네임 확인 중 오류가 발생했습니다.",
     });
   }
 };
@@ -155,4 +175,4 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { join, getUser, updateUser };
+export { join, getUser, updateUser, checkNickname };

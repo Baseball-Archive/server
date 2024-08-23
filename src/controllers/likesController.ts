@@ -22,7 +22,7 @@ export const addLikeToArchive = async (req: Request, res: Response) => {
     return res.status(StatusCodes.CREATED).json({
       message: "좋아요를 성공적으로 추가했습니다.",
     });
-  } catch (err: unknown) {
+  } catch (err) {
     console.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: "Internal Server Error",
@@ -45,7 +45,7 @@ export const removeLikeFromArchive = async (req: Request, res: Response) => {
     return res.status(StatusCodes.OK).json({
       message: "좋아요를 성공적으로 삭제했습니다.",
     });
-  } catch (err: unknown) {
+  } catch (err) {
     console.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: "Internal Server Error",
@@ -68,7 +68,7 @@ export const addLikeToBoard = async (req: Request, res: Response) => {
     return res.status(StatusCodes.CREATED).json({
       message: "좋아요를 성공적으로 추가했습니다.",
     });
-  } catch (err: unknown) {
+  } catch (err) {
     console.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: "Internal Server Error",
@@ -91,7 +91,7 @@ export const removeLikeFromBoard = async (req: Request, res: Response) => {
     return res.status(StatusCodes.OK).json({
       message: "좋아요를 성공적으로 삭제했습니다.",
     });
-  } catch (err: unknown) {
+  } catch (err) {
     console.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: "Internal Server Error",

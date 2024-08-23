@@ -33,7 +33,7 @@ export const deletePostRepository = async (boardId: number) => {
   await pool.query(sql, [boardId]);
 };
 
-export const viewPostListRepository = async () => {
+export const findAllPostRepository = async () => {
   const sql = `
         SELECT home_team_id, away_team_id, title, created_at, user_uid
         FROM board LEFT JOIN baseball_schedule
@@ -44,9 +44,11 @@ export const viewPostListRepository = async () => {
   return result.rows;
 };
 
-export const viewPostDetailRepository = async (boardId: number) => {
+export const findPostRepository = async (boardId: number) => {
   const sql = `
-        SELECT match_date, home_team_id, away_team_id, title, content, pic_url, created_at, user_uid
+        SELECT match_date, home_team_id, away_team_id, title, content, pic_url, created_at, user_uid,
+        (SELECT COUNT(*) FROM like_board WHERE board_id = $1) AS likes,
+        (SELECT COUNT(*) FROM comment_board WHERE board_id = $1) AS comments
         FROM board LEFT JOIN baseball_schedule
         ON board.schedule_id = baseball_schedule.id
         WHERE board.id = $1 

@@ -4,8 +4,8 @@ import {
   addPostRepository,
   updatePostRepository,
   deletePostRepository,
-  viewPostListRepository,
-  viewPostDetailRepository,
+  findAllPostRepository,
+  findPostRepository,
 } from "../repositories/boardRepository";
 
 export const addPost = async (req: Request, res: Response) => {
@@ -23,7 +23,7 @@ export const addPost = async (req: Request, res: Response) => {
     return res.status(StatusCodes.CREATED).json({
       message: "게시글을 성공적으로 업로드했습니다.",
     });
-  } catch (err: unknown) {
+  } catch (err) {
     console.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: "Internal Server Error",
@@ -47,7 +47,7 @@ export const updatePost = async (req: Request, res: Response) => {
     return res.status(StatusCodes.OK).json({
       message: "게시글을 성공적으로 수정했습니다.",
     });
-  } catch (err: unknown) {
+  } catch (err) {
     console.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: "Internal Server Error",
@@ -70,7 +70,7 @@ export const deletePost = async (req: Request, res: Response) => {
     return res.status(StatusCodes.OK).json({
       message: "게시글을 성공적으로 삭제했습니다.",
     });
-  } catch (err: unknown) {
+  } catch (err) {
     console.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: "Internal Server Error",
@@ -78,7 +78,7 @@ export const deletePost = async (req: Request, res: Response) => {
   }
 };
 
-export const viewPostList = async (req: Request, res: Response) => {
+export const findAllPost = async (req: Request, res: Response) => {
   try {
     const userUid = req.headers.authorization;
     if (!userUid) {
@@ -87,7 +87,7 @@ export const viewPostList = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await viewPostListRepository();
+    const result = await findAllPostRepository();
 
     return res.status(StatusCodes.OK).json(result);
   } catch (err: unknown) {
@@ -98,7 +98,7 @@ export const viewPostList = async (req: Request, res: Response) => {
   }
 };
 
-export const viewPostDetail = async (req: Request, res: Response) => {
+export const findPost = async (req: Request, res: Response) => {
   try {
     const boardId = parseInt(req.params.boardId, 10);
     const userUid = req.headers.authorization;
@@ -108,10 +108,10 @@ export const viewPostDetail = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await viewPostDetailRepository(boardId);
+    const result = await findPostRepository(boardId);
 
     return res.status(StatusCodes.OK).json(result);
-  } catch (err: unknown) {
+  } catch (err) {
     console.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: "Internal Server Error",

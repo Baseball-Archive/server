@@ -7,12 +7,11 @@ export const createPrivateArchiveRepository = async (archiveData: ArchiveData) =
 
   const query = `
     INSERT INTO archive (schedule_id, weather, home_team_score, away_team_score, title, content, pic_url, is_public,user_uid)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
   `;
   const values = [schedule_id, weather, home_team_score, away_team_score, title, content, pic_url, is_public, user_uid];
 
-  const result = await pool.query(query, values);
-  return result.rows[0].id;
+  await pool.query(query, values);
 };
 
 export const getPrivateArchivesRepository = async (user_uid: string) => {
@@ -58,20 +57,18 @@ export const updatePrivateArchiveRepository = async (archiveId: number, archiveD
   const query = `
     UPDATE archive
     SET weather = $1, home_team_score = $2, away_team_score = $3, title = $4, content = $5, pic_url = $6, is_public = $7, updated_at = $8
-    WHERE id = $9 RETURNING id
+    WHERE id = $9
   `;
   const values = [weather, home_team_score, away_team_score, title, content, pic_url, is_public, updated_at, archiveId];
 
-  const result = await pool.query(query, values);
-  return result.rows[0].id;
+  await pool.query(query, values);
 };
 
 export const deletePrivateArchiveRepository = async (archiveId: number) => {
   const query = `
-    DELETE FROM archive WHERE id = $1 RETURNING id
+    DELETE FROM archive WHERE id = $1
   `;
   const values = [archiveId];
 
-  const result = await pool.query(query, values);
-  return result.rows[0].id;
+  await pool.query(query, values);
 };

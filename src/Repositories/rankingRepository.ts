@@ -33,3 +33,12 @@ export const saveRankingRepository = async (rankings: rankingData[]) => {
   }
 };
 
+export const getRankingRepository = async (): Promise<rankingData[]> => {
+  const query = `
+    SELECT rank, baseball_team_id, games, wins, losses, draws, winning_rate
+    FROM baseball_ranking
+    ORDER BY rank ASC
+  `;
+  const result = await pool.query(query);
+  return result.rows;
+};

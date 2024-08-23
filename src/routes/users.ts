@@ -8,7 +8,7 @@ router.use(express.json());
 router.get("/", getUser);
 router.put("/", updateUser);
 
-router.get("/checkNickname", checkNickname);
+router.post("/checkNickname", checkNickname);
 
 router.post("/join", join);
 

@@ -5,7 +5,7 @@ import {
   checkNicknameRepository,
   getUserRepository,
   updateUserRepository,
-} from "../Repositories/usersRepository";
+} from "../repositories/usersRepository";
 import admin from "../../config/firebaseAdmin";
 
 const getUser = async (req: Request, res: Response) => {

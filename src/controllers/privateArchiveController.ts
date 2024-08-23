@@ -5,7 +5,7 @@ import {
   getPrivateArchivesRepository,
   updatePrivateArchiveRepository,
   deletePrivateArchiveRepository,
-} from "../Repositories/privateArchiveRepository";
+} from "../repositories/privateArchiveRepository";
 
 export const createPrivateArchive = async (req: Request, res: Response) => {
   try {

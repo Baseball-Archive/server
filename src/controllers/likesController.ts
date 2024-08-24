@@ -5,12 +5,12 @@ import {
   removeLikeFromArchiveRepository,
   addLikeToBoardRepository,
   removeLikeFromBoardRepository,
-} from "../models/likesModel";
+} from "../repositories/likesRepository";
 
 export const addLikeToArchive = async (req: Request, res: Response) => {
   try {
     const archiveId = parseInt(req.params.archiveId, 10);
-    const userUid = req.headers.authorization;
+    const userUid = req.user?.uid;
     if (!userUid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "인증되지 않은 사용자입니다.",
@@ -22,7 +22,7 @@ export const addLikeToArchive = async (req: Request, res: Response) => {
     return res.status(StatusCodes.CREATED).json({
       message: "좋아요를 성공적으로 추가했습니다.",
     });
-  } catch (err: unknown) {
+  } catch (err) {
     console.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: "Internal Server Error",
@@ -33,7 +33,7 @@ export const addLikeToArchive = async (req: Request, res: Response) => {
 export const removeLikeFromArchive = async (req: Request, res: Response) => {
   try {
     const archiveId = parseInt(req.params.archiveId, 10);
-    const userUid = req.headers.authorization;
+    const userUid = req.user?.uid;
     if (!userUid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "인증되지 않은 사용자입니다.",
@@ -45,7 +45,7 @@ export const removeLikeFromArchive = async (req: Request, res: Response) => {
     return res.status(StatusCodes.OK).json({
       message: "좋아요를 성공적으로 삭제했습니다.",
     });
-  } catch (err: unknown) {
+  } catch (err) {
     console.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: "Internal Server Error",
@@ -56,7 +56,7 @@ export const removeLikeFromArchive = async (req: Request, res: Response) => {
 export const addLikeToBoard = async (req: Request, res: Response) => {
   try {
     const boardId = parseInt(req.params.boardId, 10);
-    const userUid = req.headers.authorization;
+    const userUid = req.user?.uid;
     if (!userUid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "인증되지 않은 사용자입니다.",
@@ -68,7 +68,7 @@ export const addLikeToBoard = async (req: Request, res: Response) => {
     return res.status(StatusCodes.CREATED).json({
       message: "좋아요를 성공적으로 추가했습니다.",
     });
-  } catch (err: unknown) {
+  } catch (err) {
     console.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: "Internal Server Error",
@@ -79,7 +79,7 @@ export const addLikeToBoard = async (req: Request, res: Response) => {
 export const removeLikeFromBoard = async (req: Request, res: Response) => {
   try {
     const boardId = parseInt(req.params.boardId, 10);
-    const userUid = req.headers.authorization;
+    const userUid = req.user?.uid;
     if (!userUid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "인증되지 않은 사용자입니다.",
@@ -91,7 +91,7 @@ export const removeLikeFromBoard = async (req: Request, res: Response) => {
     return res.status(StatusCodes.OK).json({
       message: "좋아요를 성공적으로 삭제했습니다.",
     });
-  } catch (err: unknown) {
+  } catch (err) {
     console.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: "Internal Server Error",

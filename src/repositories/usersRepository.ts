@@ -56,6 +56,7 @@ type EditUserParams = {
   picURL?: string;
   myTeam: string;
 };
+
 export const updateUserRepository = async ({ uid, nickname, picURL, myTeam }: EditUserParams): Promise<void> => {
   let sql = "UPDATE users SET ";
   const values: (string | null)[] = [];

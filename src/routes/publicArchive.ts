@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { authenticateFirebaseToken } from "../middlewares/auth";
-import { viewPost, viewPostDetail } from "../controllers/publicArchiveController";
+import { findAllArchive, findArchive } from "../controllers/publicArchiveController";
 
 const router = Router();
 
-router.get("/", viewPost);
-router.get("/", viewPostDetail);
+router.get("/", authenticateFirebaseToken, findAllArchive);
+router.get("/:archiveId", authenticateFirebaseToken, findArchive);
 
 export default router;

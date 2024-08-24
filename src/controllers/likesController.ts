@@ -10,7 +10,7 @@ import {
 export const addLikeToArchive = async (req: Request, res: Response) => {
   try {
     const archiveId = parseInt(req.params.archiveId, 10);
-    const userUid = req.headers.authorization;
+    const userUid = req.user?.uid;
     if (!userUid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "인증되지 않은 사용자입니다.",
@@ -33,7 +33,7 @@ export const addLikeToArchive = async (req: Request, res: Response) => {
 export const removeLikeFromArchive = async (req: Request, res: Response) => {
   try {
     const archiveId = parseInt(req.params.archiveId, 10);
-    const userUid = req.headers.authorization;
+    const userUid = req.user?.uid;
     if (!userUid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "인증되지 않은 사용자입니다.",
@@ -56,7 +56,7 @@ export const removeLikeFromArchive = async (req: Request, res: Response) => {
 export const addLikeToBoard = async (req: Request, res: Response) => {
   try {
     const boardId = parseInt(req.params.boardId, 10);
-    const userUid = req.headers.authorization;
+    const userUid = req.user?.uid;
     if (!userUid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "인증되지 않은 사용자입니다.",
@@ -79,7 +79,7 @@ export const addLikeToBoard = async (req: Request, res: Response) => {
 export const removeLikeFromBoard = async (req: Request, res: Response) => {
   try {
     const boardId = parseInt(req.params.boardId, 10);
-    const userUid = req.headers.authorization;
+    const userUid = req.user?.uid;
     if (!userUid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "인증되지 않은 사용자입니다.",

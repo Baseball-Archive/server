@@ -11,7 +11,7 @@ import {
 export const addPost = async (req: Request, res: Response) => {
   try {
     const { scheduleId, title, content, picUrl } = req.body;
-    const userUid = req.headers.authorization;
+    const userUid = req.user?.uid;
     if (!userUid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "인증되지 않은 사용자입니다.",
@@ -35,7 +35,7 @@ export const updatePost = async (req: Request, res: Response) => {
   try {
     const boardId = parseInt(req.params.boardId, 10);
     const { scheduleId, title, content, picUrl } = req.body;
-    const userUid = req.headers.authorization;
+    const userUid = req.user?.uid;
     if (!userUid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "인증되지 않은 사용자입니다.",
@@ -58,7 +58,7 @@ export const updatePost = async (req: Request, res: Response) => {
 export const deletePost = async (req: Request, res: Response) => {
   try {
     const boardId = parseInt(req.params.boardId, 10);
-    const userUid = req.headers.authorization;
+    const userUid = req.user?.uid;
     if (!userUid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "인증되지 않은 사용자입니다.",
@@ -80,7 +80,7 @@ export const deletePost = async (req: Request, res: Response) => {
 
 export const findAllPost = async (req: Request, res: Response) => {
   try {
-    const userUid = req.headers.authorization;
+    const userUid = req.user?.uid;
     if (!userUid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "인증되지 않은 사용자입니다.",
@@ -101,7 +101,7 @@ export const findAllPost = async (req: Request, res: Response) => {
 export const findPost = async (req: Request, res: Response) => {
   try {
     const boardId = parseInt(req.params.boardId, 10);
-    const userUid = req.headers.authorization;
+    const userUid = req.user?.uid;
     if (!userUid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "인증되지 않은 사용자입니다.",

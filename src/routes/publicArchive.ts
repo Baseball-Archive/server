@@ -4,7 +4,7 @@ import { findAllArchive, findArchive } from "../controllers/publicArchiveControl
 
 const router = Router();
 
-router.get("/", findAllArchive);
-router.get("/:archiveId", findArchive);
+router.get("/", authenticateFirebaseToken, findAllArchive);
+router.get("/:archiveId", authenticateFirebaseToken, findArchive);
 
 export default router;

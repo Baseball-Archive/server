@@ -1,6 +1,6 @@
 import pool from "../../config/postgresql";
 
-export const findAllArchiveRepository = async () => {
+export const findAllArchiveRepository = async (limit: number, offset: number) => {
   const sql = `
     SELECT archive.id, home_team_id, away_team_id, title, archive.created_at, nickname, baseball_team.name,
     (SELECT COUNT(*) FROM like_archive WHERE archive_id = archive.id) AS likes,
@@ -11,10 +11,12 @@ export const findAllArchiveRepository = async () => {
     ON archive.user_uid = users.uid
     LEFT JOIN baseball_team
     ON users.my_team_id = baseball_team.id
-    WHERE is_public = true;
+    WHERE is_public = true
+    LIMIT $1 OFFSET $2;
   `;
+  const values = [limit, offset];
 
-  const result = await pool.query(sql);
+  const result = await pool.query(sql, values);
   return result.rows;
 };
 

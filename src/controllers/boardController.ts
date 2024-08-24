@@ -80,6 +80,8 @@ export const deletePost = async (req: Request, res: Response) => {
 
 export const findAllPost = async (req: Request, res: Response) => {
   try {
+    const limit = parseInt(req.query.limit as string);
+    const currentPage = parseInt(req.query.currentPage as string);
     const userUid = req.user?.uid;
     if (!userUid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
@@ -87,7 +89,8 @@ export const findAllPost = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await findAllPostRepository();
+    const offset = limit * (currentPage - 1);
+    const result = await findAllPostRepository(limit, offset);
 
     return res.status(StatusCodes.OK).json(result);
   } catch (err: unknown) {

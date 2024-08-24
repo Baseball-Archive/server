@@ -33,7 +33,7 @@ export const deletePostRepository = async (boardId: number) => {
   await pool.query(sql, [boardId]);
 };
 
-export const findAllPostRepository = async () => {
+export const findAllPostRepository = async (limit: number, offset: number) => {
   const sql = `
     SELECT board.id, home_team_id, away_team_id, title, board.created_at, nickname, baseball_team.name,
     (SELECT COUNT(*) FROM like_board WHERE board_id = board.id) AS likes,
@@ -43,10 +43,12 @@ export const findAllPostRepository = async () => {
     LEFT JOIN users
     ON board.user_uid = users.uid
     LEFT JOIN baseball_team
-    ON users.my_team_id = baseball_team.id;
+    ON users.my_team_id = baseball_team.id
+    LIMIT $1 OFFSET $2;
   `;
+  const values = [limit, offset];
 
-  const result = await pool.query(sql);
+  const result = await pool.query(sql, values);
   return result.rows;
 };
 

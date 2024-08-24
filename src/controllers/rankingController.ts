@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getLeagueRanking } from "../scrapers/rankingScraper";
-import { saveRankingRepository, getRankingRepository } from "../Repositories/rankingRepository";
+import { saveRankingRepository, getRankingRepository } from "../repositories/rankingRepository";
 import { StatusCodes } from "http-status-codes";
 
 export const saveRanking = async (req: Request, res: Response) => {

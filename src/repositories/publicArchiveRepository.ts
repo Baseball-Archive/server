@@ -28,7 +28,7 @@ export const findArchiveRepository = async (archiveId: number) => {
     SELECT archive.id, match_date,
     (SELECT name FROM baseball_team WHERE baseball_team.id = home_team_id) AS home_team_name,
     (SELECT name FROM baseball_team WHERE baseball_team.id = away_team_id) AS away_team_name,
-    title, content, archive.pic_url, archive.created_at, nickname, baseball_team.name AS my_team_name,
+    stadium, weather, home_team_score, away_team_score, title, content, archive.pic_url, archive.created_at, nickname, baseball_team.name AS my_team_name,
     (SELECT COUNT(*) FROM like_archive WHERE archive_id = $1) AS likes,
     (SELECT COUNT(*) FROM comment_archive WHERE archive_id = $1) AS comments
     FROM archive LEFT JOIN baseball_schedule

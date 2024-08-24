@@ -35,7 +35,10 @@ export const deletePostRepository = async (boardId: number) => {
 
 export const findAllPostRepository = async (limit: number, offset: number) => {
   const sql = `
-    SELECT board.id, home_team_id, away_team_id, title, board.created_at, nickname, baseball_team.name,
+    SELECT board.id,
+    (SELECT name FROM baseball_team WHERE baseball_team.id = home_team_id) AS home_team_name,
+    (SELECT name FROM baseball_team WHERE baseball_team.id = away_team_id) AS away_team_name,
+    title, board.created_at, nickname, baseball_team.name AS my_team_name,
     (SELECT COUNT(*) FROM like_board WHERE board_id = board.id) AS likes,
     (SELECT COUNT(*) FROM comment_board WHERE board_id = board.id) AS comments
     FROM board LEFT JOIN baseball_schedule
@@ -54,7 +57,10 @@ export const findAllPostRepository = async (limit: number, offset: number) => {
 
 export const findPostRepository = async (boardId: number) => {
   const sql = `
-    SELECT board.id, match_date, home_team_id, away_team_id, title, content, board.pic_url, board.created_at, nickname, baseball_team.name,
+    SELECT board.id, match_date,
+    (SELECT name FROM baseball_team WHERE baseball_team.id = home_team_id) AS home_team_name,
+    (SELECT name FROM baseball_team WHERE baseball_team.id = away_team_id) AS away_team_name,
+    title, content, board.pic_url, board.created_at, nickname, baseball_team.name AS my_team_name,
     (SELECT COUNT(*) FROM like_board WHERE board_id = $1) AS likes,
     (SELECT COUNT(*) FROM comment_board WHERE board_id = $1) AS comments
     FROM board LEFT JOIN baseball_schedule

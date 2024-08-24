@@ -2,7 +2,10 @@ import pool from "../../config/postgresql";
 
 export const findAllArchiveRepository = async (limit: number, offset: number) => {
   const sql = `
-    SELECT archive.id, home_team_id, away_team_id, title, archive.created_at, nickname, baseball_team.name,
+    SELECT archive.id,
+    (SELECT name FROM baseball_team WHERE baseball_team.id = home_team_id) AS home_team_name,
+    (SELECT name FROM baseball_team WHERE baseball_team.id = away_team_id) AS away_team_name,
+    title, archive.created_at, nickname, baseball_team.name AS my_team_name,
     (SELECT COUNT(*) FROM like_archive WHERE archive_id = archive.id) AS likes,
     (SELECT COUNT(*) FROM comment_archive WHERE archive_id = archive.id) AS comments
     FROM archive LEFT JOIN baseball_schedule
@@ -22,7 +25,10 @@ export const findAllArchiveRepository = async (limit: number, offset: number) =>
 
 export const findArchiveRepository = async (archiveId: number) => {
   const sql = `
-    SELECT archive.id, match_date, home_team_id, away_team_id, title, content, archive.pic_url, archive.created_at, nickname, baseball_team.name,
+    SELECT archive.id, match_date,
+    (SELECT name FROM baseball_team WHERE baseball_team.id = home_team_id) AS home_team_name,
+    (SELECT name FROM baseball_team WHERE baseball_team.id = away_team_id) AS away_team_name,
+    title, content, archive.pic_url, archive.created_at, nickname, baseball_team.name AS my_team_name,
     (SELECT COUNT(*) FROM like_archive WHERE archive_id = $1) AS likes,
     (SELECT COUNT(*) FROM comment_archive WHERE archive_id = $1) AS comments
     FROM archive LEFT JOIN baseball_schedule

@@ -11,6 +11,6 @@
     "noImplicitAny": true, // any 타입 암시적 사용 금지
     "typeRoots": ["./src/types", "node_modules/@types"] // 타입 경로 지정
   },
-  "include": ["./**/*.ts", "src/types/**/*.d.ts", "src/repositories/usersRepository.ts"], // 포함할 파일 경로 (루트 디렉터리에서 모든 TypeScript 파일)
+  "include": ["./**/*.ts", "src/types/**/*.d.ts"], // 포함할 파일 경로 (루트 디렉터리에서 모든 TypeScript 파일)
   "exclude": ["node_modules", "dist"] // 제외할 파일 경로
 }

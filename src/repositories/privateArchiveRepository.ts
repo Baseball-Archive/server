@@ -59,7 +59,18 @@ export const updatePrivateArchiveRepository = async (archiveId: number, archiveD
     SET schedule_id = $1, weather = $2, home_team_score = $3, away_team_score = $4, title = $5, content = $6, pic_url = $7, is_public = $8, updated_at = $9
     WHERE id = $10
   `;
-  const values = [weather, home_team_score, away_team_score, title, content, pic_url, is_public, updated_at, archiveId];
+  const values = [
+    schedule_id,
+    weather,
+    home_team_score,
+    away_team_score,
+    title,
+    content,
+    pic_url,
+    is_public,
+    updated_at,
+    archiveId,
+  ];
 
   await pool.query(query, values);
 };

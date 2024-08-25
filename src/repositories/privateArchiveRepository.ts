@@ -51,7 +51,7 @@ export const getPrivateArchivesRepository = async (user_uid: string) => {
 };
 
 export const updatePrivateArchiveRepository = async (archiveId: number, archiveData: ArchiveData) => {
-  const { weather, home_team_score, away_team_score, title, content, pic_url, is_public } = archiveData;
+  const { schedule_id, weather, home_team_score, away_team_score, title, content, pic_url, is_public } = archiveData;
   const updated_at = new Date();
 
   const query = `

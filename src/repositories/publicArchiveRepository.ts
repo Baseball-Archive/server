@@ -15,6 +15,7 @@ export const findAllArchiveRepository = async (limit: number, offset: number) =>
     LEFT JOIN baseball_team
     ON users.my_team_id = baseball_team.id
     WHERE is_public = true
+    ORDER BY archive.id DESC
     LIMIT $1 OFFSET $2;
   `;
   const values = [limit, offset];

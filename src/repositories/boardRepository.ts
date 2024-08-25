@@ -47,6 +47,7 @@ export const findAllPostRepository = async (limit: number, offset: number) => {
     ON board.user_uid = users.uid
     LEFT JOIN baseball_team
     ON users.my_team_id = baseball_team.id
+    ORDER BY board.id DESC
     LIMIT $1 OFFSET $2;
   `;
   const values = [limit, offset];

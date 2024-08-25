@@ -56,8 +56,8 @@ export const updatePrivateArchiveRepository = async (archiveId: number, archiveD
 
   const query = `
     UPDATE archive
-    SET weather = $1, home_team_score = $2, away_team_score = $3, title = $4, content = $5, pic_url = $6, is_public = $7, updated_at = $8
-    WHERE id = $9
+    SET schedule_id = $1, weather = $2, home_team_score = $3, away_team_score = $4, title = $5, content = $6, pic_url = $7, is_public = $8, updated_at = $9
+    WHERE id = $10
   `;
   const values = [weather, home_team_score, away_team_score, title, content, pic_url, is_public, updated_at, archiveId];
 

@@ -58,7 +58,7 @@ export const findAllPostRepository = async (limit: number, offset: number) => {
 
 export const findPostRepository = async (boardId: number) => {
   const sql = `
-    SELECT board.id, match_date,
+    SELECT board.id, schedule_id, match_date,
     (SELECT name FROM baseball_team WHERE baseball_team.id = home_team_id) AS home_team_name,
     (SELECT name FROM baseball_team WHERE baseball_team.id = away_team_id) AS away_team_name,
     title, content, board.pic_url, board.created_at, nickname, baseball_team.name AS my_team_name,
